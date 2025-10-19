@@ -3,9 +3,9 @@ from dash import html, dcc, Output, Input, State
 from flask import Flask
 import logging
 from kafka_producer import make_request
+import config
 
 request_accepted = False
-error_text = None
 
 server = Flask(__name__)
 log = logging.getLogger('werkzeug')
@@ -29,7 +29,7 @@ app.layout = html.Div([
     Input("interval_component", "n_intervals")
 )
 def unlock_charge_button(n):
-    return (not request_accepted), error_text
+    return (not request_accepted), config.error_text
 
 @app.callback(
     Input("request_button", "n_clicks"),
