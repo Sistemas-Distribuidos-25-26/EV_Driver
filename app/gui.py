@@ -2,7 +2,10 @@ import dash
 from dash import html, dcc, Output, Input, State
 from flask import Flask
 import logging
-#from kafka_producer import make_request
+from kafka_producer import make_request
+
+request_accepted = False
+error_text = None
 
 server = Flask(__name__)
 log = logging.getLogger('werkzeug')
@@ -11,12 +14,22 @@ log.setLevel(logging.ERROR)
 app = dash.Dash(__name__, assets_folder="assets", server=server)
 app.layout = html.Div([
     html.H3("Selecciona un punto de recarga"),
-    html.P("Tendrás que solicitar permiso a la central. Una vez validada tu solicitud, podrás recargar tu vehículo"),
+    html.P("Tendrás que solicitar permiso a la central."),
+    html.P("Una vez validada tu solicitud, podrás recargar tu vehículo"),
     dcc.Input(placeholder="ID del CP", id="cp_input"),
+    html.P("", id="error_label"),
     html.Button("Solicitar suministro", disabled=True, id="request_button", n_clicks=0),
-    html.Button("Recargar", disabled=True, id="charge_button", n_clicks=0)
-
+    html.Button("Recargar", disabled=True, id="charge_button", n_clicks=0),
+    dcc.Interval(interval=1000, n_intervals=0, id="interval_component")
 ], id="main-div")
+
+@app.callback(
+    [Output("charge_button", "disabled"),
+     Output("error_label", "children")],
+    Input("interval_component", "n_intervals")
+)
+def unlock_charge_button(n):
+    return (not request_accepted), error_text
 
 @app.callback(
     Input("request_button", "n_clicks"),
@@ -24,7 +37,7 @@ app.layout = html.Div([
 )
 def request(n, value):
     print(f"[App] Mandando solicitud de recarga en {value}...")
-    #make_request(value)
+    make_request(value)
 
 @app.callback(
     Output("request_button", "disabled"),
@@ -34,4 +47,4 @@ def unlock_request_button(value):
     return value is None
 
 def run():
-    app.run("0.0.0.0", port=8000)
+    app.run("0.0.0.0", port=8001)

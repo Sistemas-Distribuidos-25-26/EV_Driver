@@ -21,7 +21,7 @@ p {
 }
 
 h3 {
-    font-size: 20pt;
+    font-size: 24pt;
     color: #111111;
     margin-bottom: 5px;
 }
@@ -77,4 +77,8 @@ button {
     color: #70c000;
     border-color: #70c000;
     cursor: pointer;
+}
+
+#error_label {
+    color: red;
 }
