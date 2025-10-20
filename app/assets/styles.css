@@ -62,16 +62,6 @@ button {
     border-color: #888888;
 }
 
-#charge_button:disabled {
-    background-color: #888888;
-}
-
-#charge_button:hover:not(:disabled){
-    transform: translateY(-2px);
-    background-color: #70c000;
-    cursor: pointer;
-}
-
 #request_button:hover:not(:disabled) {
     transform: translateY(-2px);
     color: #70c000;

@@ -1,5 +1,3 @@
-from pydoc import describe
-
 from kafka import KafkaConsumer
 import config
 from json import loads
@@ -24,11 +22,22 @@ def receive_notifications():
             time.sleep(5)
             continue
         for message in consumer:
+            data = message.value
             if message.topic == "notifications":
-                data = message.value
                 notiftype = data.get("type")
                 target = data.get("target")
                 destination = data.get("destination")
                 if destination != config.DRIVER_ID:
                     continue
                 config.error_text = f"{notiftype}: {target}"
+                config.notification_text = None
+            else:
+                ordertype = data.get("type")
+                source = data.get("from")
+                destination = data.get("to")
+                if destination != config.DRIVER_ID:
+                    continue
+
+                if ordertype == "prepare":
+                    config.error_text = None
+                    config.notification_text = "¡Todo listo! Ya puedes iniciar la carga."
