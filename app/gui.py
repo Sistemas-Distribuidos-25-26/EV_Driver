@@ -1,3 +1,5 @@
+import os
+
 import dash
 from dash import html, dcc, Output, Input, State
 from flask import Flask
@@ -47,4 +49,4 @@ def unlock_request_button(value):
     return value is None
 
 def run():
-    app.run("0.0.0.0", port=8001)
+    app.run("0.0.0.0", port=os.getenv("PORT"))

@@ -1,3 +1,4 @@
+from kafka_producer import setup_producer
 from gui import run
 from sys import argv
 import config
@@ -12,6 +13,7 @@ config.KAFKA_IP = argv[1]
 config.KAFKA_PORT = argv[2]
 config.DRIVER_ID = argv[3]
 
+setup_producer()
 notification_thread = threading.Thread(target=receive_notifications, daemon=True)
 notification_thread.start()
 

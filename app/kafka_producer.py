@@ -5,16 +5,19 @@ from kafka import KafkaProducer
 import config
 
 producer = None
-try:
-    print(f"[KafkaProducer] Intentando conectar con Kafka ({config.KAFKA_IP}:{config.KAFKA_PORT})...")
-    producer = KafkaProducer(
-        bootstrap_servers = [f"{config.KAFKA_IP}:{config.KAFKA_PORT}"],
-        value_serializer= lambda  v: json.dumps(v).encode("utf-8")
-    )
-    print("[KafkaProducer] Conectado a Kafka")
-except Exception as e:
-    print(e)
-    producer=None
+
+def setup_producer():
+    global producer
+    try:
+        print(f"[KafkaProducer] Intentando conectar con Kafka ({config.KAFKA_IP}:{config.KAFKA_PORT})...")
+        producer = KafkaProducer(
+            bootstrap_servers = [f"{config.KAFKA_IP}:{config.KAFKA_PORT}"],
+            value_serializer= lambda  v: json.dumps(v).encode("utf-8")
+        )
+        print("[KafkaProducer] Conectado a Kafka")
+    except Exception as e:
+        print(e)
+        producer=None
 
 def order(cp_id: str, ordertype: str):
     if producer is None:
