@@ -4,7 +4,7 @@ import dash
 from dash import html, dcc, Output, Input, State
 from flask import Flask
 import logging
-from kafka_producer import make_request, order
+from kafka_producer import make_request
 import config
 
 

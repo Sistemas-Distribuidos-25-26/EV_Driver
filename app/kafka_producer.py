@@ -19,18 +19,6 @@ def setup_producer():
         print(e)
         producer=None
 
-def order(cp_id: str, ordertype: str):
-    if producer is None:
-        print("[KafkaProducer] No se puede establecer conexión con Kafka")
-        return
-    print(f"[KafkaProducer] Comenzando carga...")
-    producer.send("orders", value={
-        "type": ordertype,
-        "from": cp_id,
-        "to": config.DRIVER_ID
-    })
-    producer.flush()
-
 def make_request(cp_id: str):
     if producer is None:
         print("[KafkaProducer] No se puede establecer conexión con Kafka")
