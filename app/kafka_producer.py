@@ -4,7 +4,7 @@ import json
 from kafka import KafkaProducer
 import config
 
-producer = None
+producer : KafkaProducer | None = None
 
 def setup_producer():
     global producer
@@ -20,6 +20,8 @@ def setup_producer():
         producer=None
 
 def make_request(cp_id: str):
+    global producer
+    setup_producer()
     if producer is None:
         print("[KafkaProducer] No se puede establecer conexión con Kafka")
         return
@@ -33,4 +35,4 @@ def make_request(cp_id: str):
         "timestamp": timestamp
     })
     producer.flush()
-
+    config.FINISHED = False

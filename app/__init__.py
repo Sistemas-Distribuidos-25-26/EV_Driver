@@ -1,3 +1,4 @@
+from testing import initiate_testing
 from kafka_producer import setup_producer
 from gui import run
 from sys import argv
@@ -13,8 +14,10 @@ config.KAFKA_IP = argv[1]
 config.KAFKA_PORT = argv[2]
 config.DRIVER_ID = argv[3]
 
-setup_producer()
 notification_thread = threading.Thread(target=receive_notifications, daemon=True)
 notification_thread.start()
+
+test_thread = threading.Thread(target=initiate_testing, daemon=True)
+test_thread.start()
 
 run()
