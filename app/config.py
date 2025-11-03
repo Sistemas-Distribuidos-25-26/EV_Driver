@@ -5,3 +5,5 @@ DRIVER_ID = "d0"
 
 error_text = None
 notification_text = None
+
+FINISHED = False

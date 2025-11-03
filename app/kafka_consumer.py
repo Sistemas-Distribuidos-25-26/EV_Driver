@@ -35,6 +35,7 @@ def receive_notifications():
                 if destination != config.DRIVER_ID:
                     continue
                 if notiftype == "completed":
+                    config.FINISHED = True
                     config.notification_text = "Transacción completada."
                     config.error_text = None
                 else:
